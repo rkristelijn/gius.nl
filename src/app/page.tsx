@@ -115,7 +115,7 @@ function ResponsiveAppBar() {
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           <MenuItem
             onClick={() => {
-              handleTabChange(null, 0);
+              handleTabChange({} as React.SyntheticEvent, 0);
               handleMenuClose();
             }}
           >
@@ -123,7 +123,7 @@ function ResponsiveAppBar() {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              handleTabChange(null, 1);
+              handleTabChange({} as React.SyntheticEvent, 1);
               handleMenuClose();
             }}
           >
@@ -131,7 +131,7 @@ function ResponsiveAppBar() {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              handleTabChange(null, 2);
+              handleTabChange({} as React.SyntheticEvent, 2);
               handleMenuClose();
             }}
           >

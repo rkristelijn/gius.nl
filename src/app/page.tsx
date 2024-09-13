@@ -1,95 +1,154 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import React from 'react';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Avatar,
+  Tabs,
+  Tab,
+  Box,
+  Grid,
+  useMediaQuery,
+  Menu,
+  MenuItem,
+} from '@mui/material';
+import { Search as SearchIcon, Menu as MenuIcon } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
+import { useState } from 'react';
 
-export default function Home() {
+function ResponsiveAppBar() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [value, setValue] = useState(0);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const renderGridContent = () => {
+    switch (value) {
+      case 0:
+        return (
+          <Grid container spacing={2}>
+            {/* Contacts Grid */}
+            <Grid item xs={12} sm={6} md={4}>
+              <Box>Contact 1</Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Box>Contact 2</Box>
+            </Grid>
+            {/* Add more grid items as needed */}
+          </Grid>
+        );
+      case 1:
+        return (
+          <Grid container spacing={2}>
+            {/* Accounts Grid */}
+            <Grid item xs={12} sm={6} md={4}>
+              <Box>Account 1</Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Box>Account 2</Box>
+            </Grid>
+            {/* Add more grid items as needed */}
+          </Grid>
+        );
+      case 2:
+        return (
+          <Grid container spacing={2}>
+            {/* Addresses Grid */}
+            <Grid item xs={12} sm={6} md={4}>
+              <Box>Address 1</Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Box>Address 2</Box>
+            </Grid>
+            {/* Add more grid items as needed */}
+          </Grid>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          {isMobile && (
+            <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={handleMenuOpen}>
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            Responsive App
+          </Typography>
+          {!isMobile && (
+            <>
+              <Box sx={{ position: 'relative', display: 'flex', flexGrow: 1 }}>
+                <InputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  startAdornment={<SearchIcon />}
+                  sx={{ ml: 2, width: '100%', color: 'inherit', backgroundColor: '#f1f3f4', borderRadius: 1, pl: 1 }}
+                />
+              </Box>
+              <Avatar alt="User" src="/static/images/avatar/1.jpg" sx={{ ml: 2 }} />
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      {isMobile ? (
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+          <MenuItem
+            onClick={() => {
+              handleTabChange(null, 0);
+              handleMenuClose();
+            }}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            Contacts
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleTabChange(null, 1);
+              handleMenuClose();
+            }}
+          >
+            Accounts
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleTabChange(null, 2);
+              handleMenuClose();
+            }}
+          >
+            Addresses
+          </MenuItem>
+        </Menu>
+      ) : (
+        <Tabs value={value} onChange={handleTabChange} centered>
+          <Tab label="Contacts" />
+          <Tab label="Accounts" />
+          <Tab label="Addresses" />
+        </Tabs>
+      )}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <Box p={2}>{renderGridContent()}</Box>
+    </>
   );
 }
+
+export default ResponsiveAppBar;
